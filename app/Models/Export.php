@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Export extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id', 
+        'file_name'
+    ];
+
+    public function user () {
+        return $this->belongsTo(User::class);
+    }
 }
