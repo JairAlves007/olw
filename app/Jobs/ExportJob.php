@@ -25,8 +25,7 @@ class ExportJob implements ShouldQueue
         protected array $data,
         protected string $filename,
         protected PunkApiService $service = new PunkApiService
-    ) {
-    }
+    ) {}
 
     /**
      * Execute the job.

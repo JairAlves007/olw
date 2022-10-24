@@ -9,16 +9,25 @@ use App\Jobs\SendExportEmailJob;
 use App\Jobs\StoreExportDataJob;
 use App\Mail\ExportEmail;
 use App\Models\Export;
+use App\Models\Meal;
 use App\Services\PunkApiService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 
 class BeerController extends Controller
 {
     public function index(BeerRequest $request, PunkApiService $service)
     {
-        return $service->getBeers(...$request->validated());
+        $beers = $service->getBeers(...$request->validated());
+        $meals = Meal::all();
+
+        return Inertia::render('Beers', [
+            'beers' => $beers,
+            'meals' => $meals,
+            'filters' => $request->validated()
+        ]);
     }
 
     public function export(BeerRequest $request)
@@ -34,6 +43,6 @@ class BeerController extends Controller
             $filename
         );
 
-        return 'relatorio criado';
+        return redirect()->back()->with('success', 'Seu arquivo foi enviado para processamento e em brave estará no seu e-mail');
     }
 }
